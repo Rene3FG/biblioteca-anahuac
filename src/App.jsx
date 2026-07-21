@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Search, Download, BookOpen, ChevronRight, ArrowLeft } from 'lucide-react'
+import { Search, Download, BookOpen, ChevronRight, ArrowLeft, X } from 'lucide-react'
 import BOOKS from './data/books.json'
 
 // ─── Tokens ───────────────────────────────────────────────────────────────────
@@ -8,21 +8,21 @@ const B = '#1A1A1A'
 
 // ─── Visual config ────────────────────────────────────────────────────────────
 const COLORS = {
-  'Anatomía':        ['#1B3A6B','#2E5FA3'],
-  'Fisiología':      ['#1A5C5A','#2A8C8A'],
-  'Bioquímica':      ['#1E4B2E','#2E7A4A'],
-  'Farmacología':    ['#5C1A1A','#8C2A2A'],
-  'Patología':       ['#2E1A5C','#4A2A8C'],
-  'Microbiología':   ['#5C3A1A','#8C5A2A'],
-  'Inmunología':     ['#1A3A5C','#2A5A8C'],
-  'Cirugía':         ['#2A2A2A','#4A4A4A'],
-  'Medicina Interna':['#5C1A2E','#8C2A4A'],
-  'Medicina General':['#3A3A5C','#5A5A8C'],
+  'Anatomía':                     ['#1B3A6B','#2E5FA3'],
+  'Bioquímica':                   ['#1E4B2E','#2E7A4A'],
+  'Embriología':                  ['#1A4A5C','#2A7A8C'],
+  'Farmacología':                 ['#5C1A1A','#8C2A2A'],
+  'Fisiología':                   ['#1A5C5A','#2A8C8A'],
+  'Fisiopatología':               ['#5C4A1A','#8C7A2A'],
+  'Histología':                   ['#5C1A4A','#8C2A7A'],
+  'Inmunología':                  ['#1A3A5C','#2A5A8C'],
+  'Microbiología':                ['#5C3A1A','#8C5A2A'],
+  'Semiología-Historia Clínica':  ['#2A2A2A','#4A4A4A'],
 }
 
 const SUBJECTS = [
-  'Todos','Anatomía','Fisiología','Bioquímica','Farmacología',
-  'Patología','Microbiología','Inmunología','Cirugía','Medicina Interna',
+  'Todos','Anatomía','Bioquímica','Embriología','Farmacología','Fisiología',
+  'Fisiopatología','Histología','Inmunología','Microbiología','Semiología-Historia Clínica',
 ]
 
 // ─── Shared components ────────────────────────────────────────────────────────
@@ -46,6 +46,18 @@ const Badge = ({ subject }) => {
   const [c1] = COLORS[subject] || ['#444']
   return <span style={{ background:c1, color:'#fff', padding:'2px 9px', borderRadius:3, fontSize:9, fontWeight:700, letterSpacing:'0.08em', textTransform:'uppercase' }}>{subject}</span>
 }
+
+const Reader = ({ book, onClose }) => (
+  <div style={{ position:'fixed', inset:0, zIndex:500, background:'rgba(0,0,0,0.75)', display:'flex', flexDirection:'column' }}>
+    <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'12px 20px', background:B }}>
+      <span style={{ color:'#fff', fontSize:12, fontWeight:700, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>{book.title}</span>
+      <button onClick={onClose} style={{ background:'none', border:'none', color:'#fff', cursor:'pointer', display:'flex', padding:6 }}>
+        <X size={20} />
+      </button>
+    </div>
+    <iframe title={book.title} src={book.viewLink} style={{ flex:1, border:'none', background:'#fff' }} />
+  </div>
+)
 
 const STitle = ({ children, style = {} }) => (
   <div style={{ fontSize:11, fontWeight:700, letterSpacing:'0.18em', textTransform:'uppercase', color:B, borderLeft:`3px solid ${O}`, paddingLeft:12, lineHeight:1.2, ...style }}>
@@ -164,7 +176,7 @@ function HomeView({ go, pick }) {
               Nuestra biblioteca digital proporciona acceso inmediato al conocimiento médico de vanguardia. Estamos comprometidos con la formación integral de los profesionales de la salud mediante recursos académicos de excelencia clínica y rigor científico.
             </p>
             <div style={{ display:'flex', gap:28 }}>
-              {[['150+','Textos académicos'],['9','Áreas de especialidad'],['24/7','Disponibilidad']].map(([n, l]) => (
+              {[['150+','Textos académicos'],['10','Áreas de especialidad'],['24/7','Disponibilidad']].map(([n, l]) => (
                 <div key={l}>
                   <div style={{ fontSize:26, fontWeight:800, color:O, lineHeight:1 }}>{n}</div>
                   <div style={{ fontSize:9, color:'#aaa', textTransform:'uppercase', letterSpacing:'0.1em', marginTop:3 }}>{l}</div>
@@ -283,6 +295,7 @@ function CatalogoView({ params = {}, pick }) {
 
 // ─── DETALLE ──────────────────────────────────────────────────────────────────
 function DetalleView({ book, go, pick }) {
+  const [reading, setReading] = useState(false)
   const related = BOOKS.filter(b => b.subject === book.subject && b.id !== book.id).slice(0, 5)
 
   return (
@@ -320,9 +333,11 @@ function DetalleView({ book, go, pick }) {
           <p style={{ fontSize:13, color:'#555', lineHeight:1.8, margin:'0 0 26px' }}>{book.desc}</p>
 
           <div style={{ display:'flex', gap:10, marginBottom:28, flexWrap:'wrap' }}>
-            <OBtn href={book.viewLink}><BookOpen size={14} /> Leer en línea</OBtn>
+            <OBtn onClick={() => setReading(true)}><BookOpen size={14} /> Leer en línea</OBtn>
             <OBtn outline href={book.downloadLink}><Download size={14} /> Descargar PDF</OBtn>
           </div>
+
+          {reading && <Reader book={book} onClose={() => setReading(false)} />}
 
           {book.isbn && (
             <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10 }}>
