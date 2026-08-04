@@ -18,3 +18,56 @@ button {
 a {
   font-family: inherit;
 }
+
+html {
+  overflow-x: hidden;
+}
+
+.navbar {
+  padding: 0 28px;
+  height: 62px;
+}
+
+.navbar .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.two-col,
+.sidebar-layout,
+.detail-layout {
+  grid-template-columns: 1fr 1fr;
+}
+
+.sidebar-layout {
+  grid-template-columns: 175px 1fr;
+}
+
+.detail-layout {
+  grid-template-columns: 220px 1fr;
+}
+
+@media (max-width: 680px) {
+  .navbar {
+    height: auto;
+    min-height: 62px;
+    flex-wrap: wrap;
+    row-gap: 10px;
+    padding: 12px 16px;
+  }
+  .navbar .brand {
+    flex: 1 0 100%;
+  }
+  .navbar .nav-right {
+    flex-wrap: wrap;
+    gap: 14px;
+    width: 100%;
+  }
+
+  .two-col,
+  .sidebar-layout,
+  .detail-layout {
+    grid-template-columns: 1fr;
+  }
+}

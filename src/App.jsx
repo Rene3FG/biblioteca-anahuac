@@ -132,7 +132,7 @@ function HomeView({ go, pick, onLogin }) {
 
       {/* Misión + Acceso Facultad */}
       <div style={{ padding:'44px 28px', background:'#fff' }}>
-        <div style={{ maxWidth:1100, margin:'0 auto', display:'grid', gridTemplateColumns:'1fr 1fr', gap:28, alignItems:'start' }}>
+        <div className="two-col" style={{ maxWidth:1100, margin:'0 auto', display:'grid', gap:28, alignItems:'start' }}>
           <div>
             <STitle style={{ marginBottom:16 }}>Misión Institucional</STitle>
             <p style={{ fontSize:13, color:'#555', lineHeight:1.8, margin:'0 0 24px' }}>
@@ -186,7 +186,7 @@ function CatalogoView({ params = {}, pick, onRequireLogin }) {
   const paged = list.slice((page - 1) * PER, page * PER)
 
   return (
-    <div style={{ maxWidth:1100, margin:'0 auto', padding:'32px 28px', display:'grid', gridTemplateColumns:'175px 1fr', gap:28 }}>
+    <div className="sidebar-layout" style={{ maxWidth:1100, margin:'0 auto', padding:'32px 28px', display:'grid', gap:28 }}>
       {/* Sidebar */}
       <div>
         <div style={{ marginBottom:22 }}>
@@ -293,7 +293,7 @@ function DetalleView({ book, go, pick, onRequireLogin }) {
         <span style={{ color:B }}>{book.title.length > 42 ? book.title.slice(0, 42) + '…' : book.title}</span>
       </div>
 
-      <div style={{ display:'grid', gridTemplateColumns:'220px 1fr', gap:36 }}>
+      <div className="detail-layout" style={{ display:'grid', gap:36 }}>
         <div>
           <Cover book={book} h={300} />
           <div style={{ marginTop:14, display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
@@ -383,11 +383,11 @@ export default function App() {
     <div style={{ fontFamily:"system-ui,-apple-system,'Segoe UI',sans-serif", minHeight:'100vh', display:'flex', flexDirection:'column', background:'#fff' }}>
 
       {/* Navbar */}
-      <nav style={{ position:'sticky', top:0, zIndex:200, background:B, padding:'0 28px', display:'flex', alignItems:'center', justifyContent:'space-between', height:62, boxShadow:'0 2px 14px rgba(0,0,0,0.5)' }}>
-        <button onClick={() => go('home')} style={{ background:'none', border:'none', cursor:'pointer', fontSize:13, fontWeight:800, color:'#fff', letterSpacing:'0.12em', textTransform:'uppercase' }}>
+      <nav className="navbar" style={{ position:'sticky', top:0, zIndex:200, background:B, display:'flex', alignItems:'center', justifyContent:'space-between', boxShadow:'0 2px 14px rgba(0,0,0,0.5)' }}>
+        <button className="brand" onClick={() => go('home')} style={{ background:'none', border:'none', cursor:'pointer', fontSize:13, fontWeight:800, color:'#fff', letterSpacing:'0.12em', textTransform:'uppercase' }}>
           Biblioteca <span style={{ color:O }}>Anáhuac</span>
         </button>
-        <div style={{ display:'flex', alignItems:'center', gap:22 }}>
+        <div className="nav-right">
           {[['Inicio','home'],['Catálogo','catalogo'], ...(user ? [['Mi Biblioteca','mi-biblioteca']] : [])].map(([l, p]) => (
             <button key={p} onClick={() => go(p)} style={{ background:'none', border:'none', color: page === p ? O : 'rgba(255,255,255,0.75)', fontSize:11, fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', cursor:'pointer', paddingBottom:3, borderBottom: page === p ? `2px solid ${O}` : '2px solid transparent', transition:'color 0.12s' }}>
               {l}
