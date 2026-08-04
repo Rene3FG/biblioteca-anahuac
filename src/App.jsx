@@ -429,17 +429,22 @@ export default function App() {
               Biblioteca <span style={{ color:O }}>Anáhuac</span>
             </div>
             <div style={{ fontSize:10, color:'rgba(255,255,255,0.38)', maxWidth:260, lineHeight:1.7 }}>
-              © 2024 Escuela de Medicina · Universidad Anáhuac Oaxaca.<br />Todos los derechos reservados.
+              © 2026 Escuela de Medicina · Universidad Anáhuac Oaxaca.<br />Todos los derechos reservados.
             </div>
           </div>
           <div style={{ display:'flex', gap:20, flexWrap:'wrap' }}>
-            {['Repositorio institucional','Investigación docente','Ética bibliotecaria','Contacto y soporte'].map(l => (
+            {['Repositorio institucional','Investigación docente','Ética bibliotecaria'].map(l => (
               <button key={l} style={{ background:'none', border:'none', color:'rgba(255,255,255,0.45)', fontSize:10, letterSpacing:'0.08em', textTransform:'uppercase', cursor:'pointer', padding:0, lineHeight:2, transition:'color 0.12s' }}
                 onMouseEnter={e => e.currentTarget.style.color = O}
                 onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.45)'}>
                 {l}
               </button>
             ))}
+            <a href="mailto:rene.fuentes03@anahuac.mx" style={{ color:'rgba(255,255,255,0.45)', fontSize:10, letterSpacing:'0.08em', textTransform:'uppercase', cursor:'pointer', lineHeight:2, textDecoration:'none', transition:'color 0.12s' }}
+              onMouseEnter={e => e.currentTarget.style.color = O}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.45)'}>
+              Contacto y soporte
+            </a>
           </div>
         </div>
       </footer>
