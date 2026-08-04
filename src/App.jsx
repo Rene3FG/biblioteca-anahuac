@@ -1,24 +1,13 @@
 import { useState } from 'react'
-import { Search, Download, BookOpen, ChevronRight, ArrowLeft, X } from 'lucide-react'
+import { Search, Download, BookOpen, ChevronRight, ArrowLeft, X, Star, LogOut } from 'lucide-react'
 import BOOKS from './data/books.json'
-
-// ─── Tokens ───────────────────────────────────────────────────────────────────
-const O = '#E8541E'
-const B = '#1A1A1A'
-
-// ─── Visual config ────────────────────────────────────────────────────────────
-const COLORS = {
-  'Anatomía':                     ['#1B3A6B','#2E5FA3'],
-  'Bioquímica':                   ['#1E4B2E','#2E7A4A'],
-  'Embriología':                  ['#1A4A5C','#2A7A8C'],
-  'Farmacología':                 ['#5C1A1A','#8C2A2A'],
-  'Fisiología':                   ['#1A5C5A','#2A8C8A'],
-  'Fisiopatología':               ['#5C4A1A','#8C7A2A'],
-  'Histología':                   ['#5C1A4A','#8C2A7A'],
-  'Inmunología':                  ['#1A3A5C','#2A5A8C'],
-  'Microbiología':                ['#5C3A1A','#8C5A2A'],
-  'Semiología-Historia Clínica':  ['#2A2A2A','#4A4A4A'],
-}
+import { O, B, Cover, Badge, STitle } from './ui'
+import { useAuth } from './context/AuthContext'
+import { useFavorites } from './hooks/useFavorites'
+import { useRecentlyRead } from './hooks/useRecentlyRead'
+import LoginModal from './components/LoginModal'
+import UpdatePasswordModal from './components/UpdatePasswordModal'
+import MiBibliotecaView from './views/MiBibliotecaView'
 
 const SUBJECTS = [
   'Todos','Anatomía','Bioquímica','Embriología','Farmacología','Fisiología',
@@ -26,26 +15,6 @@ const SUBJECTS = [
 ]
 
 // ─── Shared components ────────────────────────────────────────────────────────
-
-const Cover = ({ book, h = 200 }) => {
-  const [c1, c2] = COLORS[book.subject] || ['#222','#444']
-  return (
-    <div style={{ width:'100%', height:h, background:`linear-gradient(140deg,${c1},${c2})`, borderRadius:4, padding:12, display:'flex', flexDirection:'column', justifyContent:'space-between', position:'relative', overflow:'hidden', boxShadow:'2px 4px 14px rgba(0,0,0,0.22)', flexShrink:0 }}>
-      <div style={{ position:'absolute', left:0, top:0, bottom:0, width:5, background:'rgba(0,0,0,0.32)' }} />
-      <div style={{ position:'absolute', top:10, right:10, background:'rgba(255,255,255,0.12)', borderRadius:3, padding:'2px 6px', fontSize:9, color:'#fff', letterSpacing:'0.06em' }}>{book.year}</div>
-      <div style={{ fontSize:9, letterSpacing:'0.15em', textTransform:'uppercase', color:'rgba(255,255,255,0.6)', fontWeight:700 }}>{book.subject}</div>
-      <div>
-        <div style={{ color:'#fff', fontWeight:700, fontSize:11, lineHeight:1.35, marginBottom:3 }}>{book.title}</div>
-        <div style={{ color:'rgba(255,255,255,0.5)', fontSize:10 }}>{(book.author || '').split(',')[0] || 'Anáhuac Medicina'}</div>
-      </div>
-    </div>
-  )
-}
-
-const Badge = ({ subject }) => {
-  const [c1] = COLORS[subject] || ['#444']
-  return <span style={{ background:c1, color:'#fff', padding:'2px 9px', borderRadius:3, fontSize:9, fontWeight:700, letterSpacing:'0.08em', textTransform:'uppercase' }}>{subject}</span>
-}
 
 const Reader = ({ book, onClose }) => (
   <div style={{ position:'fixed', inset:0, zIndex:500, background:'rgba(0,0,0,0.75)', display:'flex', flexDirection:'column' }}>
@@ -56,12 +25,6 @@ const Reader = ({ book, onClose }) => (
       </button>
     </div>
     <iframe title={book.title} src={book.viewLink} style={{ flex:1, border:'none', background:'#fff' }} />
-  </div>
-)
-
-const STitle = ({ children, style = {} }) => (
-  <div style={{ fontSize:11, fontWeight:700, letterSpacing:'0.18em', textTransform:'uppercase', color:B, borderLeft:`3px solid ${O}`, paddingLeft:12, lineHeight:1.2, ...style }}>
-    {children}
   </div>
 )
 
@@ -103,7 +66,7 @@ const CatCard = ({ subject, onClick }) => {
 }
 
 // ─── HOME ─────────────────────────────────────────────────────────────────────
-function HomeView({ go, pick }) {
+function HomeView({ go, pick, onLogin }) {
   const [q, setQ] = useState('')
   const recent = BOOKS.filter(b => b.recent).slice(0, 6)
 
@@ -189,7 +152,7 @@ function HomeView({ go, pick }) {
             <p style={{ color:'rgba(255,255,255,0.6)', fontSize:12, lineHeight:1.75, margin:'0 0 24px' }}>
               Ingresa con tus credenciales institucionales para acceder al repositorio completo de investigaciones, tesis de grado y material de apoyo docente.
             </p>
-            <button style={{ background:'transparent', border:`1.5px solid ${O}`, color:O, padding:'11px 18px', fontWeight:700, fontSize:10, letterSpacing:'0.1em', textTransform:'uppercase', cursor:'pointer', borderRadius:4, width:'100%', transition:'all 0.12s' }}
+            <button onClick={onLogin} style={{ background:'transparent', border:`1.5px solid ${O}`, color:O, padding:'11px 18px', fontWeight:700, fontSize:10, letterSpacing:'0.1em', textTransform:'uppercase', cursor:'pointer', borderRadius:4, width:'100%', transition:'all 0.12s' }}
               onMouseEnter={e => { e.currentTarget.style.background = O; e.currentTarget.style.color = '#fff' }}
               onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = O }}>
               Acceder ahora
@@ -202,11 +165,13 @@ function HomeView({ go, pick }) {
 }
 
 // ─── CATÁLOGO ─────────────────────────────────────────────────────────────────
-function CatalogoView({ params = {}, pick }) {
+function CatalogoView({ params = {}, pick, onRequireLogin }) {
   const [filter, setFilter] = useState(params.filter || 'Todos')
   const [sort,   setSort]   = useState('recientes')
   const [search, setSearch] = useState(params.q || '')
   const [page,   setPage]   = useState(1)
+  const { user } = useAuth()
+  const { isFavorite, toggleFavorite } = useFavorites()
   const PER = 8
 
   let list = BOOKS.filter(b => {
@@ -264,7 +229,14 @@ function CatalogoView({ params = {}, pick }) {
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(148px,1fr))', gap:18 }}>
             {paged.map(b => (
               <div key={b.id}>
-                <Cover book={b} h={188} />
+                <div style={{ position:'relative' }}>
+                  <Cover book={b} h={188} />
+                  <button
+                    onClick={() => user ? toggleFavorite(b.id) : onRequireLogin()}
+                    style={{ position:'absolute', top:10, left:10, background:'rgba(0,0,0,0.32)', border:'none', borderRadius:3, padding:5, cursor:'pointer', display:'flex' }}>
+                    <Star size={13} color="#fff" fill={isFavorite(b.id) ? '#fff' : 'none'} />
+                  </button>
+                </div>
                 <div style={{ marginTop:8 }}>
                   <Badge subject={b.subject} />
                   <div style={{ fontSize:11, fontWeight:700, margin:'6px 0 2px', color:B, lineHeight:1.3 }}>{b.title}</div>
@@ -294,9 +266,22 @@ function CatalogoView({ params = {}, pick }) {
 }
 
 // ─── DETALLE ──────────────────────────────────────────────────────────────────
-function DetalleView({ book, go, pick }) {
+function DetalleView({ book, go, pick, onRequireLogin }) {
   const [reading, setReading] = useState(false)
+  const { user } = useAuth()
+  const { isFavorite, toggleFavorite } = useFavorites()
+  const { recordRead } = useRecentlyRead()
   const related = BOOKS.filter(b => b.subject === book.subject && b.id !== book.id).slice(0, 5)
+
+  const handleRead = () => {
+    setReading(true)
+    if (user) recordRead(book.id)
+  }
+
+  const handleFavorite = () => {
+    if (!user) { onRequireLogin(); return }
+    toggleFavorite(book.id)
+  }
 
   return (
     <div style={{ maxWidth:1100, margin:'0 auto', padding:'28px 28px 56px' }}>
@@ -333,8 +318,12 @@ function DetalleView({ book, go, pick }) {
           <p style={{ fontSize:13, color:'#555', lineHeight:1.8, margin:'0 0 26px' }}>{book.desc}</p>
 
           <div style={{ display:'flex', gap:10, marginBottom:28, flexWrap:'wrap' }}>
-            <OBtn onClick={() => setReading(true)}><BookOpen size={14} /> Leer en línea</OBtn>
+            <OBtn onClick={handleRead}><BookOpen size={14} /> Leer en línea</OBtn>
             <OBtn outline href={book.downloadLink}><Download size={14} /> Descargar PDF</OBtn>
+            <OBtn outline onClick={handleFavorite}>
+              <Star size={14} fill={isFavorite(book.id) ? O : 'none'} />
+              {isFavorite(book.id) ? 'En favoritos' : 'Agregar a favoritos'}
+            </OBtn>
           </div>
 
           {reading && <Reader book={book} onClose={() => setReading(false)} />}
@@ -375,6 +364,8 @@ export default function App() {
   const [page,   setPage]   = useState('home')
   const [params, setParams] = useState({})
   const [book,   setBook]   = useState(null)
+  const [showLogin, setShowLogin] = useState(false)
+  const { user, passwordRecovery, signOut } = useAuth()
 
   const go = (p, ps = {}) => {
     setPage(p)
@@ -397,24 +388,39 @@ export default function App() {
           Biblioteca <span style={{ color:O }}>Anáhuac</span>
         </button>
         <div style={{ display:'flex', alignItems:'center', gap:22 }}>
-          {[['Inicio','home'],['Catálogo','catalogo']].map(([l, p]) => (
+          {[['Inicio','home'],['Catálogo','catalogo'], ...(user ? [['Mi Biblioteca','mi-biblioteca']] : [])].map(([l, p]) => (
             <button key={p} onClick={() => go(p)} style={{ background:'none', border:'none', color: page === p ? O : 'rgba(255,255,255,0.75)', fontSize:11, fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', cursor:'pointer', paddingBottom:3, borderBottom: page === p ? `2px solid ${O}` : '2px solid transparent', transition:'color 0.12s' }}>
               {l}
             </button>
           ))}
-          <button style={{ background:'transparent', border:'1.5px solid rgba(255,255,255,0.28)', color:'rgba(255,255,255,0.75)', padding:'6px 14px', fontSize:10, fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', cursor:'pointer', borderRadius:3, transition:'all 0.12s' }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = O; e.currentTarget.style.color = O }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.28)'; e.currentTarget.style.color = 'rgba(255,255,255,0.75)' }}>
-            Ingresar
-          </button>
+          {user ? (
+            <div style={{ display:'flex', alignItems:'center', gap:12 }}>
+              <span style={{ fontSize:10, color:'rgba(255,255,255,0.6)' }}>{user.email}</span>
+              <button onClick={signOut} title="Cerrar sesión" style={{ background:'transparent', border:'1.5px solid rgba(255,255,255,0.28)', color:'rgba(255,255,255,0.75)', padding:'6px 10px', cursor:'pointer', borderRadius:3, display:'flex', transition:'all 0.12s' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = O; e.currentTarget.style.color = O }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.28)'; e.currentTarget.style.color = 'rgba(255,255,255,0.75)' }}>
+                <LogOut size={14} />
+              </button>
+            </div>
+          ) : (
+            <button onClick={() => setShowLogin(true)} style={{ background:'transparent', border:'1.5px solid rgba(255,255,255,0.28)', color:'rgba(255,255,255,0.75)', padding:'6px 14px', fontSize:10, fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', cursor:'pointer', borderRadius:3, transition:'all 0.12s' }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = O; e.currentTarget.style.color = O }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.28)'; e.currentTarget.style.color = 'rgba(255,255,255,0.75)' }}>
+              Ingresar
+            </button>
+          )}
         </div>
       </nav>
 
       <main style={{ flex:1 }}>
-        {page === 'home'     && <HomeView go={go} pick={pick} />}
-        {page === 'catalogo' && <CatalogoView params={params} pick={pick} />}
-        {page === 'detalle'  && book && <DetalleView book={book} go={go} pick={pick} />}
+        {page === 'home'          && <HomeView go={go} pick={pick} onLogin={() => setShowLogin(true)} />}
+        {page === 'catalogo'      && <CatalogoView params={params} pick={pick} onRequireLogin={() => setShowLogin(true)} />}
+        {page === 'detalle'       && book && <DetalleView book={book} go={go} pick={pick} onRequireLogin={() => setShowLogin(true)} />}
+        {page === 'mi-biblioteca' && user && <MiBibliotecaView pick={pick} />}
       </main>
+
+      {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
+      {passwordRecovery && <UpdatePasswordModal />}
 
       <footer style={{ background:'#111', padding:'32px 28px' }}>
         <div style={{ maxWidth:1100, margin:'0 auto', display:'flex', justifyContent:'space-between', alignItems:'flex-start', flexWrap:'wrap', gap:20 }}>
