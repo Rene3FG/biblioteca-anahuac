@@ -12,6 +12,7 @@ export function useFavorites() {
       .from('favorites')
       .select('book_id')
       .order('created_at', { ascending: false })
+      .limit(50)
     setFavorites((data ?? []).map(r => r.book_id))
   }, [user])
 

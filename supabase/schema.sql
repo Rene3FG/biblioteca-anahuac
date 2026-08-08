@@ -17,6 +17,9 @@ create table if not exists public.recently_read (
   primary key (user_id, book_id)
 );
 
+create index if not exists favorites_user_created_idx on public.favorites (user_id, created_at desc);
+create index if not exists recently_read_user_last_idx on public.recently_read (user_id, last_read_at desc);
+
 alter table public.favorites enable row level security;
 alter table public.recently_read enable row level security;
 
