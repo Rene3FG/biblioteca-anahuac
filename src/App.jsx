@@ -14,6 +14,11 @@ const SUBJECTS = [
   'Fisiopatología','Histología','Inmunología','Microbiología','Semiología-Historia Clínica',
 ]
 
+const SOCIEDAD_LINKS = [
+  { label: 'Instagram', href: 'https://www.instagram.com/sa_medicina_uao' },
+  // Agregar aquí correo u otras redes de la Sociedad cuando estén disponibles
+]
+
 // ─── Shared components ────────────────────────────────────────────────────────
 
 const Reader = ({ book, onClose }) => (
@@ -422,6 +427,35 @@ export default function App() {
       {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
       {passwordRecovery && <UpdatePasswordModal />}
 
+      {/* Sociedad de Alumnos de Medicina */}
+      <section style={{ background:'#1A1A1A', padding:'56px 28px' }}>
+        <div style={{ maxWidth:1100, margin:'0 auto', textAlign:'center' }}>
+          <div style={{ fontSize:11, fontWeight:700, letterSpacing:'0.2em', textTransform:'uppercase', color:O, marginBottom:20 }}>
+            Sociedad de Alumnos de Medicina 2026–2027
+          </div>
+          <div style={{ display:'flex', justifyContent:'center', alignItems:'center', gap:40, flexWrap:'wrap' }}>
+            <p style={{ flex:'1 1 360px', maxWidth:640, margin:'0 auto', color:'rgba(255,255,255,0.75)', fontSize:15, lineHeight:1.8, textAlign:'center' }}>
+              Somos la Sociedad de Alumnos de Medicina 2026–2027, un equipo comprometido con representar a los estudiantes y crear experiencias que impulsen nuestra formación, participación y sentido de comunidad. Esta biblioteca digital es una de ellas: un recurso abierto para toda la comunidad médica de la Anáhuac Oaxaca.
+            </p>
+            <div style={{ width:'100%', maxWidth:400, margin:'0 auto', aspectRatio:'3 / 4', borderRadius:8, overflow:'hidden', boxShadow:'2px 6px 20px rgba(0,0,0,0.4)', flexShrink:0 }}>
+              <img
+                src="/sociedad-2026-2027.jpg"
+                alt="Mesa directiva de la Sociedad de Alumnos de Medicina 2026–2027"
+                width={1200}
+                height={1600}
+                loading="lazy"
+                style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'center', display:'block' }}
+              />
+            </div>
+          </div>
+          <div style={{ display:'flex', justifyContent:'center', gap:14, flexWrap:'wrap', marginTop:32 }}>
+            {SOCIEDAD_LINKS.map(l => (
+              <OBtn key={l.label} href={l.href}>{l.label}</OBtn>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <footer style={{ background:'#111', padding:'32px 28px' }}>
         <div style={{ maxWidth:1100, margin:'0 auto', display:'flex', justifyContent:'space-between', alignItems:'flex-start', flexWrap:'wrap', gap:20 }}>
           <div>
@@ -440,12 +474,25 @@ export default function App() {
                 {l}
               </button>
             ))}
-            <a href="mailto:rene.fuentes03@anahuac.mx" style={{ color:'rgba(255,255,255,0.45)', fontSize:10, letterSpacing:'0.08em', textTransform:'uppercase', cursor:'pointer', lineHeight:2, textDecoration:'none', transition:'color 0.12s' }}
+            <a href={SOCIEDAD_LINKS[0].href} target="_blank" rel="noopener noreferrer" style={{ color:'rgba(255,255,255,0.45)', fontSize:10, letterSpacing:'0.08em', textTransform:'uppercase', cursor:'pointer', lineHeight:2, textDecoration:'none', transition:'color 0.12s' }}
               onMouseEnter={e => e.currentTarget.style.color = O}
               onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.45)'}>
-              Contacto y soporte
+              Contacto
             </a>
           </div>
+        </div>
+        <div style={{ maxWidth:1100, margin:'0 auto', textAlign:'right' }}>
+          <a href="mailto:rene.fuentes03@anahuac.mx" style={{ color:'rgba(255,255,255,0.3)', fontSize:9, letterSpacing:'0.06em', textTransform:'uppercase', textDecoration:'none' }}>
+            Soporte técnico
+          </a>
+        </div>
+        <div style={{ maxWidth:1100, margin:'20px auto 0', paddingTop:16, borderTop:'1px solid rgba(255,255,255,0.08)', textAlign:'center', fontSize:10, color:'rgba(255,255,255,0.3)', letterSpacing:'0.03em' }}>
+          Diseño y desarrollo de la plataforma ·{' '}
+          <a href="https://github.com/Rene3FG" target="_blank" rel="noopener noreferrer" style={{ color:'inherit', textDecoration:'none' }}
+            onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.55)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>
+            René Fuentes Guzmán
+          </a>
         </div>
       </footer>
     </div>
