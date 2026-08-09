@@ -20,8 +20,8 @@ export const Cover = ({ book, h = 200 }) => {
   return (
     <div style={{ width:'100%', height:h, background:`linear-gradient(140deg,${c1},${c2})`, borderRadius:4, padding:12, display:'flex', flexDirection:'column', justifyContent:'space-between', position:'relative', overflow:'hidden', boxShadow:'2px 4px 14px rgba(0,0,0,0.22)', flexShrink:0 }}>
       <div style={{ position:'absolute', left:0, top:0, bottom:0, width:5, background:'rgba(0,0,0,0.32)' }} />
-      <div style={{ position:'absolute', top:10, right:10, background:'rgba(255,255,255,0.12)', borderRadius:3, padding:'2px 6px', fontSize:9, color:'#fff', letterSpacing:'0.06em' }}>{book.year}</div>
-      <div style={{ fontSize:9, letterSpacing:'0.15em', textTransform:'uppercase', color:'rgba(255,255,255,0.6)', fontWeight:700 }}>{book.subject}</div>
+      {book.year && <div style={{ position:'absolute', top:10, right:10, background:'rgba(255,255,255,0.12)', borderRadius:3, padding:'2px 6px', fontSize:9, color:'#fff', letterSpacing:'0.06em' }}>{book.year}</div>}
+      <div style={{ fontSize:9, letterSpacing:'0.15em', textTransform:'uppercase', color:'rgba(255,255,255,0.6)', fontWeight:700, paddingRight:44 }}>{book.subject}</div>
       <div>
         <div style={{ color:'#fff', fontWeight:700, fontSize:11, lineHeight:1.35, marginBottom:3 }}>{book.title}</div>
         <div style={{ color:'rgba(255,255,255,0.5)', fontSize:10 }}>{(book.author || '').split(',')[0] || 'Anáhuac Medicina'}</div>
@@ -32,7 +32,7 @@ export const Cover = ({ book, h = 200 }) => {
 
 export const Badge = ({ subject }) => {
   const [c1] = COLORS[subject] || ['#444']
-  return <span style={{ background:c1, color:'#fff', padding:'2px 9px', borderRadius:3, fontSize:9, fontWeight:700, letterSpacing:'0.08em', textTransform:'uppercase' }}>{subject}</span>
+  return <span style={{ background:c1, color:'#fff', padding:'2px 9px', borderRadius:3, fontSize:9, fontWeight:700, letterSpacing:'0.08em', textTransform:'uppercase', display:'inline-block', lineHeight:1.5 }}>{subject}</span>
 }
 
 export const STitle = ({ children, style = {} }) => (

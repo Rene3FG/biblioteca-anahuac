@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Search, Download, BookOpen, ChevronRight, ArrowLeft, X, Star, LogOut } from 'lucide-react'
+import { Search, Download, BookOpen, ChevronRight, ChevronDown, SlidersHorizontal, ArrowLeft, X, Star, LogOut } from 'lucide-react'
 import BOOKS from './data/books.json'
 import { O, B, Cover, Badge, STitle } from './ui'
 import { useAuth } from './context/AuthContext'
@@ -73,6 +73,7 @@ const CatCard = ({ subject, onClick }) => {
 // ─── HOME ─────────────────────────────────────────────────────────────────────
 function HomeView({ go, pick, onLogin }) {
   const [q, setQ] = useState('')
+  const { user } = useAuth()
   const recent = BOOKS.filter(b => b.recent).slice(0, 6)
 
   return (
@@ -144,7 +145,7 @@ function HomeView({ go, pick, onLogin }) {
               Nuestra biblioteca digital proporciona acceso inmediato al conocimiento médico de vanguardia. Estamos comprometidos con la formación integral de los profesionales de la salud mediante recursos académicos de excelencia clínica y rigor científico.
             </p>
             <div style={{ display:'flex', gap:28 }}>
-              {[['150+','Textos académicos'],['10','Áreas de especialidad'],['24/7','Disponibilidad']].map(([n, l]) => (
+              {[[String(BOOKS.length),'Textos académicos'],[String(SUBJECTS.length - 1),'Áreas de especialidad'],['24/7','Disponibilidad']].map(([n, l]) => (
                 <div key={l}>
                   <div style={{ fontSize:26, fontWeight:800, color:O, lineHeight:1 }}>{n}</div>
                   <div style={{ fontSize:9, color:'#aaa', textTransform:'uppercase', letterSpacing:'0.1em', marginTop:3 }}>{l}</div>
@@ -153,15 +154,44 @@ function HomeView({ go, pick, onLogin }) {
             </div>
           </div>
           <div style={{ background:B, borderRadius:6, padding:28 }}>
-            <div style={{ fontSize:9, letterSpacing:'0.2em', textTransform:'uppercase', color:O, fontWeight:700, marginBottom:12 }}>Acceso exclusivo · Facultad</div>
+            <div style={{ fontSize:9, letterSpacing:'0.2em', textTransform:'uppercase', color:O, fontWeight:700, marginBottom:12 }}>Cuenta institucional · @anahuac.mx</div>
             <p style={{ color:'rgba(255,255,255,0.6)', fontSize:12, lineHeight:1.75, margin:'0 0 24px' }}>
-              Ingresa con tus credenciales institucionales para acceder al repositorio completo de investigaciones, tesis de grado y material de apoyo docente.
+              {user
+                ? 'Tus favoritos y tus lecturas recientes quedan guardados en tu cuenta. Consúltalos cuando quieras desde Mi Biblioteca.'
+                : 'Ingresa con tu correo @anahuac.mx para guardar tus libros favoritos y retomar tus lecturas donde las dejaste.'}
             </p>
-            <button onClick={onLogin} style={{ background:'transparent', border:`1.5px solid ${O}`, color:O, padding:'11px 18px', fontWeight:700, fontSize:10, letterSpacing:'0.1em', textTransform:'uppercase', cursor:'pointer', borderRadius:4, width:'100%', transition:'all 0.12s' }}
+            <button onClick={user ? () => go('mi-biblioteca') : onLogin} style={{ background:'transparent', border:`1.5px solid ${O}`, color:O, padding:'11px 18px', fontWeight:700, fontSize:10, letterSpacing:'0.1em', textTransform:'uppercase', cursor:'pointer', borderRadius:4, width:'100%', transition:'all 0.12s' }}
               onMouseEnter={e => { e.currentTarget.style.background = O; e.currentTarget.style.color = '#fff' }}
               onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = O }}>
-              Acceder ahora
+              {user ? 'Ir a Mi Biblioteca' : 'Acceder ahora'}
             </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Sociedad de Alumnos de Medicina */}
+      <div style={{ padding:'48px 28px', background:'#F7F7F7', borderTop:'1px solid #EEE' }}>
+        <div style={{ maxWidth:1100, margin:'0 auto' }}>
+          <STitle style={{ marginBottom:24 }}>Sociedad de Alumnos de Medicina 2026–2027</STitle>
+          <div style={{ display:'flex', gap:32, alignItems:'center', flexWrap:'wrap' }}>
+            <img
+              src="/sociedad-2026-2027.jpg"
+              alt="Mesa directiva de la Sociedad de Alumnos de Medicina 2026–2027"
+              width={780}
+              height={1040}
+              loading="lazy"
+              style={{ width:'100%', maxWidth:260, height:'auto', aspectRatio:'3 / 4', objectFit:'cover', objectPosition:'center', borderRadius:6, boxShadow:'2px 4px 16px rgba(0,0,0,0.16)', display:'block', flexShrink:0 }}
+            />
+            <div style={{ flex:'1 1 340px', maxWidth:560 }}>
+              <p style={{ fontSize:13, color:'#555', lineHeight:1.8, margin:'0 0 22px' }}>
+                Somos la Sociedad de Alumnos de Medicina 2026–2027, un equipo comprometido con representar a los estudiantes y crear experiencias que impulsen nuestra formación, participación y sentido de comunidad. Esta biblioteca digital es una de ellas: un recurso abierto para toda la comunidad médica de la Anáhuac Oaxaca.
+              </p>
+              <div style={{ display:'flex', gap:10, flexWrap:'wrap' }}>
+                {SOCIEDAD_LINKS.map(l => (
+                  <OBtn key={l.label} outline href={l.href}>{l.label}</OBtn>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -175,6 +205,7 @@ function CatalogoView({ params = {}, pick, onRequireLogin }) {
   const [sort,   setSort]   = useState('recientes')
   const [search, setSearch] = useState(params.q || '')
   const [page,   setPage]   = useState(1)
+  const [filtersOpen, setFiltersOpen] = useState(false)
   const { user } = useAuth()
   const { isFavorite, toggleFavorite } = useFavorites()
   const PER = 8
@@ -184,7 +215,7 @@ function CatalogoView({ params = {}, pick, onRequireLogin }) {
     if (search && !b.title.toLowerCase().includes(search.toLowerCase()) && !(b.author || '').toLowerCase().includes(search.toLowerCase())) return false
     return true
   })
-  if (sort === 'recientes') list = [...list].sort((a, b) => b.year - a.year)
+  if (sort === 'recientes') list = [...list].sort((a, b) => (b.year || 0) - (a.year || 0))
   if (sort === 'az')        list = [...list].sort((a, b) => a.title.localeCompare(b.title))
 
   const total = Math.ceil(list.length / PER)
@@ -194,33 +225,42 @@ function CatalogoView({ params = {}, pick, onRequireLogin }) {
     <div className="sidebar-layout" style={{ maxWidth:1100, margin:'0 auto', padding:'32px 28px', display:'grid', gap:28 }}>
       {/* Sidebar */}
       <div>
-        <div style={{ marginBottom:22 }}>
-          <div style={{ fontSize:9, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.14em', color:'#aaa', marginBottom:8 }}>Ordenar por</div>
-          <select value={sort} onChange={e => { setSort(e.target.value); setPage(1) }}
-            style={{ width:'100%', padding:'9px 10px', border:'1px solid #E0E0E0', borderRadius:4, fontSize:12, outline:'none', cursor:'pointer', color:B }}>
-            <option value="recientes">Más recientes</option>
-            <option value="az">A → Z</option>
-          </select>
-        </div>
-        <div>
-          <div style={{ fontSize:9, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.14em', color:'#aaa', marginBottom:10 }}>Materia</div>
-          {SUBJECTS.map(s => (
-            <label key={s} style={{ display:'flex', alignItems:'center', gap:8, marginBottom:9, cursor:'pointer' }}>
-              <input type="radio" checked={filter === s} onChange={() => { setFilter(s); setPage(1) }} style={{ accentColor:O, cursor:'pointer' }} />
-              <span style={{ fontSize:12, color: filter === s ? O : B, fontWeight: filter === s ? 700 : 400 }}>{s}</span>
-            </label>
-          ))}
+        {/* Solo visible en móvil: evita tener que pasar los 11 filtros para llegar a los libros */}
+        <button className="filters-toggle" onClick={() => setFiltersOpen(o => !o)}
+          style={{ width:'100%', alignItems:'center', gap:8, background:'#fff', border:'1px solid #E0E0E0', borderRadius:4, padding:'10px 12px', cursor:'pointer', fontSize:10, fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', color:B, marginBottom:14 }}>
+          <SlidersHorizontal size={13} color={O} />
+          Filtros{filter !== 'Todos' ? ` · ${filter}` : ''}
+          <ChevronDown size={14} color="#aaa" style={{ marginLeft:'auto', transform: filtersOpen ? 'rotate(180deg)' : 'none', transition:'transform 0.15s' }} />
+        </button>
+
+        <div className={filtersOpen ? 'filters-panel open' : 'filters-panel'}>
+          <div style={{ marginBottom:22 }}>
+            <div style={{ fontSize:9, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.14em', color:'#aaa', marginBottom:8 }}>Ordenar por</div>
+            <select value={sort} onChange={e => { setSort(e.target.value); setPage(1) }}
+              style={{ width:'100%', padding:'9px 10px', border:'1px solid #E0E0E0', borderRadius:4, fontSize:12, outline:'none', cursor:'pointer', color:B }}>
+              <option value="recientes">Más recientes</option>
+              <option value="az">A → Z</option>
+            </select>
+          </div>
+          <div>
+            <div style={{ fontSize:9, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.14em', color:'#aaa', marginBottom:10 }}>Materia</div>
+            {SUBJECTS.map(s => (
+              <label key={s} style={{ display:'flex', alignItems:'center', gap:8, marginBottom:9, cursor:'pointer' }}>
+                <input type="radio" checked={filter === s} onChange={() => { setFilter(s); setPage(1); setFiltersOpen(false) }} style={{ accentColor:O, cursor:'pointer' }} />
+                <span style={{ fontSize:12, color: filter === s ? O : B, fontWeight: filter === s ? 700 : 400 }}>{s}</span>
+              </label>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Grid */}
       <div>
-        <div style={{ display:'flex', marginBottom:24 }}>
+        <div style={{ position:'relative', marginBottom:24 }}>
+          <Search size={15} color="#BBB" style={{ position:'absolute', left:13, top:'50%', transform:'translateY(-50%)', pointerEvents:'none' }} />
           <input value={search} onChange={e => { setSearch(e.target.value); setPage(1) }} placeholder="Buscar en el catálogo..."
-            style={{ flex:1, padding:'10px 14px', border:'1px solid #E0E0E0', borderRadius:'4px 0 0 4px', fontSize:13, outline:'none', color:B }} />
-          <button style={{ background:O, color:'#fff', border:'none', padding:'10px 15px', cursor:'pointer', borderRadius:'0 4px 4px 0' }}>
-            <Search size={15} />
-          </button>
+            aria-label="Buscar en el catálogo"
+            style={{ width:'100%', padding:'10px 14px 10px 36px', border:'1px solid #E0E0E0', borderRadius:4, fontSize:13, outline:'none', color:B }} />
         </div>
 
         <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20 }}>
@@ -234,19 +274,22 @@ function CatalogoView({ params = {}, pick, onRequireLogin }) {
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(148px,1fr))', gap:18 }}>
             {paged.map(b => (
               <div key={b.id}>
-                <div style={{ position:'relative' }}>
-                  <Cover book={b} h={188} />
-                  <button
-                    onClick={() => user ? toggleFavorite(b.id) : onRequireLogin()}
-                    style={{ position:'absolute', top:10, left:10, background:'rgba(0,0,0,0.32)', border:'none', borderRadius:3, padding:5, cursor:'pointer', display:'flex' }}>
-                    <Star size={13} color="#fff" fill={isFavorite(b.id) ? '#fff' : 'none'} />
-                  </button>
-                </div>
+                <Cover book={b} h={188} />
                 <div style={{ marginTop:8 }}>
                   <Badge subject={b.subject} />
                   <div style={{ fontSize:11, fontWeight:700, margin:'6px 0 2px', color:B, lineHeight:1.3 }}>{b.title}</div>
                   <div style={{ fontSize:10, color:'#aaa', marginBottom:9 }}>{(b.author || '').split(',')[0] || '—'}</div>
-                  <button onClick={() => pick(b)} style={{ background:O, color:'#fff', border:'none', width:'100%', padding:'8px 0', fontSize:9, fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', cursor:'pointer', borderRadius:3 }}>Ver</button>
+                  <div style={{ display:'flex', gap:5 }}>
+                    <button onClick={() => pick(b)} style={{ background:O, color:'#fff', border:'none', flex:1, padding:'8px 0', fontSize:9, fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', cursor:'pointer', borderRadius:3 }}>Ver</button>
+                    <button
+                      onClick={() => user ? toggleFavorite(b.id) : onRequireLogin()}
+                      title={isFavorite(b.id) ? 'Quitar de favoritos' : 'Agregar a favoritos'}
+                      aria-label={isFavorite(b.id) ? `Quitar ${b.title} de favoritos` : `Agregar ${b.title} a favoritos`}
+                      aria-pressed={isFavorite(b.id)}
+                      style={{ background:'transparent', border:`1px solid ${isFavorite(b.id) ? O : '#DDD'}`, borderRadius:3, padding:'0 9px', cursor:'pointer', display:'flex', alignItems:'center', transition:'border-color 0.12s' }}>
+                      <Star size={13} color={isFavorite(b.id) ? O : '#BBB'} fill={isFavorite(b.id) ? O : 'none'} />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -302,7 +345,7 @@ function DetalleView({ book, go, pick, onRequireLogin }) {
         <div>
           <Cover book={book} h={300} />
           <div style={{ marginTop:14, display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
-            {[['Edición', book.edition || '—'],['Idioma','Español'],['Páginas', book.pages || '—'],['Año', book.year]].map(([k, v]) => (
+            {[['Edición', book.edition || '—'],['Idioma','Español'],['Páginas', book.pages || '—'],['Año', book.year || '—']].map(([k, v]) => (
               <div key={k} style={{ background:'#F7F7F7', borderRadius:4, padding:'10px 12px' }}>
                 <div style={{ fontSize:8, color:'#bbb', textTransform:'uppercase', letterSpacing:'0.12em', marginBottom:3 }}>{k}</div>
                 <div style={{ fontSize:13, fontWeight:700, color:B }}>{v}</div>
@@ -314,10 +357,9 @@ function DetalleView({ book, go, pick, onRequireLogin }) {
         <div>
           <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:12 }}>
             <Badge subject={book.subject} />
-            <span style={{ fontSize:9, color:O, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.12em' }}>Recurso destacado</span>
           </div>
           <h1 style={{ fontSize:'clamp(20px,3vw,28px)', fontWeight:800, color:B, lineHeight:1.15, margin:'0 0 8px', letterSpacing:'-0.01em' }}>{book.title}</h1>
-          {book.author && <div style={{ fontSize:12, color:'#888', marginBottom:18 }}>Por {book.author} · {book.year}</div>}
+          {book.author && <div style={{ fontSize:12, color:'#888', marginBottom:18 }}>Por {book.author}{book.year ? ` · ${book.year}` : ''}</div>}
           <div style={{ width:36, height:2, background:O, marginBottom:22 }} />
           <div style={{ fontSize:9, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.14em', color:'#bbb', marginBottom:8 }}>Descripción general</div>
           <p style={{ fontSize:13, color:'#555', lineHeight:1.8, margin:'0 0 26px' }}>{book.desc}</p>
@@ -332,17 +374,6 @@ function DetalleView({ book, go, pick, onRequireLogin }) {
           </div>
 
           {reading && <Reader book={book} onClose={() => setReading(false)} />}
-
-          {book.isbn && (
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10 }}>
-              {[['ISBN-13', book.isbn],['Páginas', book.pages ? `${book.pages} pág.` : '—'],['Edición', book.edition ? `${book.edition} ed.` : '—']].map(([k, v]) => (
-                <div key={k} style={{ border:'1px solid #EEE', borderRadius:4, padding:'12px 14px' }}>
-                  <div style={{ fontSize:8, color:'#bbb', textTransform:'uppercase', letterSpacing:'0.12em', marginBottom:4 }}>{k}</div>
-                  <div style={{ fontSize:12, fontWeight:700, color:B }}>{v}</div>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       </div>
 
@@ -354,7 +385,7 @@ function DetalleView({ book, go, pick, onRequireLogin }) {
               <div key={b.id} onClick={() => pick(b)} style={{ cursor:'pointer' }}>
                 <Cover book={b} h={168} />
                 <div style={{ fontSize:11, fontWeight:700, marginTop:7, color:B, lineHeight:1.3 }}>{b.title}</div>
-                <div style={{ fontSize:10, color:'#aaa', marginTop:2 }}>{(b.author || '').split(',')[0] || '—'} · {b.year}</div>
+                <div style={{ fontSize:10, color:'#aaa', marginTop:2 }}>{(b.author || '').split(',')[0] || '—'}{b.year ? ` · ${b.year}` : ''}</div>
               </div>
             ))}
           </div>
@@ -427,35 +458,6 @@ export default function App() {
       {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
       {passwordRecovery && <UpdatePasswordModal />}
 
-      {/* Sociedad de Alumnos de Medicina */}
-      <section style={{ background:'#1A1A1A', padding:'56px 28px' }}>
-        <div style={{ maxWidth:1100, margin:'0 auto', textAlign:'center' }}>
-          <div style={{ fontSize:11, fontWeight:700, letterSpacing:'0.2em', textTransform:'uppercase', color:O, marginBottom:20 }}>
-            Sociedad de Alumnos de Medicina 2026–2027
-          </div>
-          <div style={{ display:'flex', justifyContent:'center', alignItems:'center', gap:40, flexWrap:'wrap' }}>
-            <p style={{ flex:'1 1 360px', maxWidth:640, margin:'0 auto', color:'rgba(255,255,255,0.75)', fontSize:15, lineHeight:1.8, textAlign:'center' }}>
-              Somos la Sociedad de Alumnos de Medicina 2026–2027, un equipo comprometido con representar a los estudiantes y crear experiencias que impulsen nuestra formación, participación y sentido de comunidad. Esta biblioteca digital es una de ellas: un recurso abierto para toda la comunidad médica de la Anáhuac Oaxaca.
-            </p>
-            <div style={{ width:'100%', maxWidth:400, margin:'0 auto', aspectRatio:'3 / 4', borderRadius:8, overflow:'hidden', boxShadow:'2px 6px 20px rgba(0,0,0,0.4)', flexShrink:0 }}>
-              <img
-                src="/sociedad-2026-2027.jpg"
-                alt="Mesa directiva de la Sociedad de Alumnos de Medicina 2026–2027"
-                width={1200}
-                height={1600}
-                loading="lazy"
-                style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'center', display:'block' }}
-              />
-            </div>
-          </div>
-          <div style={{ display:'flex', justifyContent:'center', gap:14, flexWrap:'wrap', marginTop:32 }}>
-            {SOCIEDAD_LINKS.map(l => (
-              <OBtn key={l.label} href={l.href}>{l.label}</OBtn>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <footer style={{ background:'#111', padding:'32px 28px' }}>
         <div style={{ maxWidth:1100, margin:'0 auto', display:'flex', justifyContent:'space-between', alignItems:'flex-start', flexWrap:'wrap', gap:20 }}>
           <div>
@@ -466,25 +468,18 @@ export default function App() {
               © 2026 Escuela de Medicina · Universidad Anáhuac Oaxaca.<br />Todos los derechos reservados.
             </div>
           </div>
-          <div style={{ display:'flex', gap:20, flexWrap:'wrap' }}>
-            {['Repositorio institucional','Investigación docente','Ética bibliotecaria'].map(l => (
-              <button key={l} style={{ background:'none', border:'none', color:'rgba(255,255,255,0.45)', fontSize:10, letterSpacing:'0.08em', textTransform:'uppercase', cursor:'pointer', padding:0, lineHeight:2, transition:'color 0.12s' }}
-                onMouseEnter={e => e.currentTarget.style.color = O}
-                onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.45)'}>
-                {l}
-              </button>
-            ))}
+          <div style={{ display:'flex', flexDirection:'column', alignItems:'flex-start', gap:6 }}>
             <a href={SOCIEDAD_LINKS[0].href} target="_blank" rel="noopener noreferrer" style={{ color:'rgba(255,255,255,0.45)', fontSize:10, letterSpacing:'0.08em', textTransform:'uppercase', cursor:'pointer', lineHeight:2, textDecoration:'none', transition:'color 0.12s' }}
               onMouseEnter={e => e.currentTarget.style.color = O}
               onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.45)'}>
-              Contacto
+              Contacto · Sociedad de Alumnos
+            </a>
+            <a href="mailto:rene.fuentes03@anahuac.mx" style={{ color:'rgba(255,255,255,0.3)', fontSize:9, letterSpacing:'0.06em', textTransform:'uppercase', textDecoration:'none', transition:'color 0.12s' }}
+              onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.3)'}>
+              Soporte técnico
             </a>
           </div>
-        </div>
-        <div style={{ maxWidth:1100, margin:'0 auto', textAlign:'right' }}>
-          <a href="mailto:rene.fuentes03@anahuac.mx" style={{ color:'rgba(255,255,255,0.3)', fontSize:9, letterSpacing:'0.06em', textTransform:'uppercase', textDecoration:'none' }}>
-            Soporte técnico
-          </a>
         </div>
         <div style={{ maxWidth:1100, margin:'20px auto 0', paddingTop:16, borderTop:'1px solid rgba(255,255,255,0.08)', textAlign:'center', fontSize:10, color:'rgba(255,255,255,0.3)', letterSpacing:'0.03em' }}>
           Diseño y desarrollo de la plataforma ·{' '}

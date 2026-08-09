@@ -22,13 +22,17 @@ export function useFavorites() {
 
   const toggleFavorite = async (bookId) => {
     if (!user) return
-    if (isFavorite(bookId)) {
-      setFavorites(favorites.filter(id => id !== bookId))
-      await supabase.from('favorites').delete().eq('user_id', user.id).eq('book_id', bookId)
-    } else {
-      setFavorites([bookId, ...favorites])
-      await supabase.from('favorites').insert({ user_id: user.id, book_id: bookId })
-    }
+    const previous = favorites
+    const adding = !isFavorite(bookId)
+
+    setFavorites(adding ? [bookId, ...favorites] : favorites.filter(id => id !== bookId))
+
+    const { error } = adding
+      ? await supabase.from('favorites').insert({ user_id: user.id, book_id: bookId })
+      : await supabase.from('favorites').delete().eq('user_id', user.id).eq('book_id', bookId)
+
+    // Si no se guardó, la estrella no debe quedarse mintiendo hasta el próximo refresh
+    if (error) setFavorites(previous)
   }
 
   return { favorites, isFavorite, toggleFavorite }

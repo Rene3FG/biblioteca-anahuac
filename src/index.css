@@ -48,7 +48,22 @@ html {
   grid-template-columns: 220px 1fr;
 }
 
+/* El toggle de filtros solo existe en móvil; en escritorio el panel va siempre abierto */
+.filters-toggle {
+  display: none;
+}
+
 @media (max-width: 680px) {
+  .filters-toggle {
+    display: flex;
+  }
+  .filters-panel {
+    display: none;
+  }
+  .filters-panel.open {
+    display: block;
+  }
+
   .navbar {
     height: auto;
     min-height: 62px;
