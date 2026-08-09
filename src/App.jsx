@@ -62,7 +62,7 @@ const CatCard = ({ subject, onClick }) => {
   const [hov, setHov] = useState(false)
   return (
     <button onClick={onClick} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-      style={{ background: hov ? '#FFF3EE' : '#fff', border:`1.5px solid ${hov ? O : '#E8E8E8'}`, borderRadius:6, padding:'18px 10px', cursor:'pointer', display:'flex', justifyContent:'center', alignItems:'center', transition:'all 0.15s' }}>
+      style={{ background: hov ? '#FFF3EE' : '#fff', border:`1.5px solid ${hov ? O : '#E8E8E8'}`, borderRadius:6, padding:'18px 10px', minHeight:60, cursor:'pointer', display:'flex', justifyContent:'center', alignItems:'center', transition:'all 0.15s' }}>
       <span style={{ fontSize:10, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.1em', color: hov ? O : '#555', textAlign:'center', transition:'color 0.15s' }}>
         {subject}
       </span>
@@ -82,7 +82,7 @@ function HomeView({ go, pick, onLogin }) {
       <div style={{ background:'linear-gradient(135deg,#0C1622 0%,#1A1A2E 60%,#16213E 100%)', padding:'76px 28px 80px', position:'relative', overflow:'hidden' }}>
         <div style={{ position:'absolute', inset:0, opacity:0.04, backgroundImage:'repeating-linear-gradient(0deg,#fff 0,#fff 1px,transparent 1px,transparent 48px),repeating-linear-gradient(90deg,#fff 0,#fff 1px,transparent 1px,transparent 48px)' }} />
         <div style={{ position:'absolute', right:'-5%', top:'-10%', width:400, height:400, borderRadius:'50%', background:`radial-gradient(circle,${O}22 0%,transparent 70%)`, pointerEvents:'none' }} />
-        <div style={{ maxWidth:860, margin:'0 auto', position:'relative' }}>
+        <div style={{ maxWidth:1100, margin:'0 auto', position:'relative' }}>
           <div style={{ fontSize:9, letterSpacing:'0.28em', color:O, textTransform:'uppercase', fontWeight:700, marginBottom:16 }}>
             Escuela de Medicina · Universidad Anáhuac Oaxaca
           </div>
@@ -104,7 +104,8 @@ function HomeView({ go, pick, onLogin }) {
       <div style={{ padding:'44px 28px', background:'#fff', borderBottom:'1px solid #F0F0F0' }}>
         <div style={{ maxWidth:1100, margin:'0 auto' }}>
           <STitle style={{ marginBottom:20 }}>Categorías</STitle>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(110px,1fr))', gap:10 }}>
+          {/* 170px de mínimo reparte las 11 materias en 6+5 en vez de dejar la última sola */}
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(170px,1fr))', gap:10 }}>
             {SUBJECTS.slice(1).map(s => (
               <CatCard key={s} subject={s} onClick={() => go('catalogo', { filter: s })} />
             ))}

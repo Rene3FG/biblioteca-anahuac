@@ -23,7 +23,8 @@
     "desc": "La referencia más completa de anatomía clínica. Integra ilustraciones de alta fidelidad con casos de estudio y correlaciones clínicas en cada capítulo.",
     "pages": 1235,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/02-gray-s-anatomia-para-estudiantes.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/02-gray-s-anatomia-para-estudiantes.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/02-gray-s-anatomia-para-estudiantes.pdf",
+    "cover": "/covers/cover-2.jpg"
   },
   {
     "id": 3,
@@ -34,7 +35,8 @@
     "desc": "Atlas fotográfico e ilustrado que recorre cada sistema del cuerpo humano con vistas anatómicas detalladas para el estudio práctico.",
     "pages": 360,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/03-atlas-de-anatomia-humana.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/03-atlas-de-anatomia-humana.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/03-atlas-de-anatomia-humana.pdf",
+    "cover": "/covers/cover-3.jpg"
   },
   {
     "id": 4,
@@ -46,7 +48,8 @@
     "desc": "Guía compacta de neuroanatomía funcional, ideal para repaso rápido antes de prácticas clínicas y exámenes.",
     "pages": 194,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/04-neuroanatomia-de-bolsillo.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/04-neuroanatomia-de-bolsillo.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/04-neuroanatomia-de-bolsillo.pdf",
+    "cover": "/covers/cover-4.jpg"
   },
   {
     "id": 5,
@@ -57,7 +60,8 @@
     "desc": "Colección de esquemas anatómicos de apoyo para el repaso visual rápido de estructuras musculares y articulares.",
     "pages": 52,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/05-esquemas-de-anatomia.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/05-esquemas-de-anatomia.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/05-esquemas-de-anatomia.pdf",
+    "cover": "/covers/cover-5.jpg"
   },
   {
     "id": 6,
@@ -68,7 +72,8 @@
     "desc": "Compilación de ilustraciones anatómicas de apoyo para complementar el estudio de estructuras corporales.",
     "pages": 152,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/06-ilustraciones-de-anatomia.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/06-ilustraciones-de-anatomia.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/06-ilustraciones-de-anatomia.pdf",
+    "cover": "/covers/cover-6.jpg"
   },
   {
     "id": 7,
@@ -92,7 +97,8 @@
     "desc": "Continúa la obra clásica de Rouvière con el estudio detallado del tórax, abdomen y pelvis.",
     "pages": 719,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/08-anatomia-humana-tomo-ii-tronco.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/08-anatomia-humana-tomo-ii-tronco.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/08-anatomia-humana-tomo-ii-tronco.pdf",
+    "cover": "/covers/cover-8.jpg"
   },
   {
     "id": 9,
@@ -104,7 +110,8 @@
     "desc": "Anatomía descriptiva y funcional de las extremidades superiores e inferiores.",
     "pages": 674,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/09-anatomia-humana-tomo-iii-miembros.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/09-anatomia-humana-tomo-iii-miembros.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/09-anatomia-humana-tomo-iii-miembros.pdf",
+    "cover": "/covers/cover-9.jpg"
   },
   {
     "id": 10,
@@ -116,7 +123,8 @@
     "desc": "Estudio anatómico del encéfalo, la médula espinal y las vías nerviosas.",
     "pages": 407,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/10-anatomia-humana-tomo-iv-sistema-nervioso-central.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/10-anatomia-humana-tomo-iv-sistema-nervioso-central.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/10-anatomia-humana-tomo-iv-sistema-nervioso-central.pdf",
+    "cover": "/covers/cover-10.jpg"
   },
   {
     "id": 11,
@@ -129,7 +137,8 @@
     "desc": "El atlas de anatomía más utilizado en la formación médica, con las ilustraciones clásicas del Dr. Frank Netter.",
     "pages": 595,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/11-atlas-de-anatomia-humana.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/11-atlas-de-anatomia-humana.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/11-atlas-de-anatomia-humana.pdf",
+    "cover": "/covers/cover-11.jpg"
   },
   {
     "id": 12,
@@ -181,7 +190,8 @@
     "desc": "Texto clásico de bioquímica con diagramas metabólicos y correlaciones clínicas, en español.",
     "pages": 792,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/15-harper-bioquimica-ilustrada.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/15-harper-bioquimica-ilustrada.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/15-harper-bioquimica-ilustrada.pdf",
+    "cover": "/covers/cover-15.jpg"
   },
   {
     "id": 16,
@@ -220,7 +230,8 @@
     "desc": "La obra de referencia definitiva en farmacología. Vincula los mecanismos de acción molecular con la aplicación terapéutica.",
     "pages": 2066,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/18-goodman-gilman-las-bases-farmacologicas-de-la-terapeutica.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/18-goodman-gilman-las-bases-farmacologicas-de-la-terapeutica.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/18-goodman-gilman-las-bases-farmacologicas-de-la-terapeutica.pdf",
+    "cover": "/covers/cover-18.jpg"
   },
   {
     "id": 19,
@@ -232,7 +243,8 @@
     "desc": "Serie Lippincott de repaso ilustrado. Presenta la farmacología de forma esquemática, ideal para estudio y repaso de exámenes.",
     "pages": 767,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/19-farmacologia.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/19-farmacologia.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/19-farmacologia.pdf",
+    "cover": "/covers/cover-19.jpg"
   },
   {
     "id": 20,
@@ -245,7 +257,8 @@
     "desc": "Cubre la fisiología humana integrando conceptos moleculares, celulares y de sistemas con relevancia clínica.",
     "pages": 762,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/20-ganong-fisiologia-medica.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/20-ganong-fisiologia-medica.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/20-ganong-fisiologia-medica.pdf",
+    "cover": "/covers/cover-20.jpg"
   },
   {
     "id": 21,
@@ -257,7 +270,8 @@
     "desc": "El texto de fisiología más utilizado en las escuelas de medicina del mundo. Cubre desde los principios biofísicos hasta la integración de sistemas.",
     "pages": 1078,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/21-guyton-y-hall-tratado-de-fisiologia-medica.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/21-guyton-y-hall-tratado-de-fisiologia-medica.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/21-guyton-y-hall-tratado-de-fisiologia-medica.pdf",
+    "cover": "/covers/cover-21.jpg"
   },
   {
     "id": 22,
@@ -270,7 +284,8 @@
     "desc": "Enfoque conceptual de la fisiopatología: salud y enfermedad explicadas desde los mecanismos celulares hasta la clínica.",
     "pages": 1594,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/22-porth-fisiopatologia.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/22-porth-fisiopatologia.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/22-porth-fisiopatologia.pdf",
+    "cover": "/covers/cover-22.jpg"
   },
   {
     "id": 23,
@@ -283,7 +298,8 @@
     "desc": "Una introducción a la medicina clínica desde la fisiopatología de las enfermedades más frecuentes por aparato y sistema.",
     "pages": 777,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/23-fisiopatologia-de-la-enfermedad.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/23-fisiopatologia-de-la-enfermedad.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/23-fisiopatologia-de-la-enfermedad.pdf",
+    "cover": "/covers/cover-23.jpg"
   },
   {
     "id": 24,
@@ -296,7 +312,8 @@
     "desc": "Correlaciona la histología con la biología celular y molecular, con abundantes micrografías y correlaciones clínicas.",
     "pages": 1071,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/24-ross-histologia-texto-y-atlas.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/24-ross-histologia-texto-y-atlas.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/24-ross-histologia-texto-y-atlas.pdf",
+    "cover": "/covers/cover-24.jpg"
   },
   {
     "id": 25,
@@ -308,7 +325,8 @@
     "desc": "Tarjetas de repaso rápido con las ilustraciones histológicas clásicas de Netter, ideales para memorización activa antes de exámenes.",
     "pages": 467,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/25-netter-s-histology-flash-cards.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/25-netter-s-histology-flash-cards.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/25-netter-s-histology-flash-cards.pdf",
+    "cover": "/covers/cover-25.jpg"
   },
   {
     "id": 26,
@@ -321,7 +339,8 @@
     "desc": "Atlas fotográfico de histología con correlaciones funcionales y clínicas para cada tejido del cuerpo humano.",
     "pages": 433,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/26-atlas-color-de-histologia.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/26-atlas-color-de-histologia.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/26-atlas-color-de-histologia.pdf",
+    "cover": "/covers/cover-26.jpg"
   },
   {
     "id": 27,
@@ -333,7 +352,8 @@
     "desc": "Cubre desde los mecanismos básicos del sistema inmune hasta las aplicaciones clínicas en enfermedades autoinmunes, inmunodeficiencias y cáncer.",
     "pages": 558,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/27-inmunologia-celular-y-molecular.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/27-inmunologia-celular-y-molecular.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/27-inmunologia-celular-y-molecular.pdf",
+    "cover": "/covers/cover-27.jpg"
   },
   {
     "id": 28,
@@ -346,7 +366,8 @@
     "desc": "Referencia esencial para comprender los agentes infecciosos de mayor relevancia clínica, con casos y diagnóstico diferencial.",
     "pages": 966,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/28-microbiologia-medica.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/28-microbiologia-medica.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/28-microbiologia-medica.pdf",
+    "cover": "/covers/cover-28.jpg"
   },
   {
     "id": 29,
@@ -359,7 +380,8 @@
     "desc": "Manual de referencia para la exploración física y la elaboración de la historia clínica, con técnica exploratoria detallada por aparatos.",
     "pages": 1065,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/29-bates-guia-de-exploracion-fisica-e-historia-clinica.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/29-bates-guia-de-exploracion-fisica-e-historia-clinica.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/29-bates-guia-de-exploracion-fisica-e-historia-clinica.pdf",
+    "cover": "/covers/cover-29.jpg"
   },
   {
     "id": 30,
@@ -372,7 +394,8 @@
     "desc": "Guía de la serie Atención Primaria de Calidad con recomendaciones prácticas para el diagnóstico y manejo clínico de la artrosis.",
     "pages": 47,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/30-guia-de-buena-practica-clinica-en-artrosis.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/30-guia-de-buena-practica-clinica-en-artrosis.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/30-guia-de-buena-practica-clinica-en-artrosis.pdf",
+    "cover": "/covers/cover-30.jpg"
   },
   {
     "id": 31,
@@ -397,6 +420,7 @@
     "desc": "Describe el origen y significado de los signos y síntomas más frecuentes en la práctica clínica, publicado por la UNAM FES Zaragoza.",
     "pages": 882,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/32-semiologia-de-las-principales-manifestaciones-clinicas.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/32-semiologia-de-las-principales-manifestaciones-clinicas.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/32-semiologia-de-las-principales-manifestaciones-clinicas.pdf",
+    "cover": "/covers/cover-32.jpg"
   }
 ]
