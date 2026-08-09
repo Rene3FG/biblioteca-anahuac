@@ -36,17 +36,26 @@ const CROPS = {
 }
 
 // En estos la marca está impresa sobre el arte central: cualquier recorte que
-// la elimine destruye la portada. Se quedan sin imagen y el catálogo cae al
-// gradiente de color de su materia, que es el diseño original.
-const SIN_PORTADA = new Set([
-  1,  // Moore              — marca sobre el rostro
-  7,  // Rouvière I         — marca a media portada
-  12, // Netter Colorear    — segunda marca tenue sobre los lápices
-  13, // Lehninger          — marca sobre la molécula
-  14, // Bioquímica Baynes  — marca sobre la molécula
-  16, // Harper's Illustrated — marca sobre la molécula
-  17, // Langman            — marca sobre la ilustración
-  31, // Terminología Médica — marca a media portada
+// la elimine destruye la portada, así que su PDF no sirve como fuente.
+//
+// Seis se cubrieron con la portada de la editorial vía la API de Open Library
+// (covers.openlibrary.org), verificando en cada una que la edición impresa en
+// la carátula fuera la misma que la del catálogo. Esos JPG están commiteados a
+// mano en public/covers/ y este script los respeta: nunca los genera ni los
+// borra, solo los enlaza en books.json si el archivo existe.
+//
+// Los otros dos no tienen sustituto y se quedan con el gradiente de su materia:
+//   7  Rouvière I         — Open Library solo tiene el tomo II y un lote de los tres
+//   31 Terminología Médica — título local, sin registro en Open Library
+const PDF_INSERVIBLE = new Set([
+  1,  // Moore                — marca sobre el rostro          · portada de Open Library
+  7,  // Rouvière I           — marca a media portada          · sin sustituto
+  12, // Netter Colorear      — segunda marca sobre los lápices · portada de Open Library
+  13, // Lehninger            — marca sobre la molécula        · portada de Open Library
+  14, // Bioquímica Baynes    — marca sobre la molécula        · portada de Open Library
+  16, // Harper's Illustrated — marca sobre la molécula        · portada de Open Library
+  17, // Langman              — marca sobre la ilustración     · portada de Open Library
+  31, // Terminología Médica  — marca a media portada          · sin sustituto
 ])
 
 const force = process.argv.includes('--force')
@@ -71,7 +80,7 @@ let excluded = 0
 const failed = []
 
 for (const book of books) {
-  if (SIN_PORTADA.has(book.id)) {
+  if (PDF_INSERVIBLE.has(book.id)) {
     excluded++
     continue
   }
@@ -135,8 +144,8 @@ for (const book of catalog) {
 
 fs.writeFileSync(BOOKS_JSON, `${JSON.stringify(catalog, null, 2)}\n`)
 
-console.log(`\nGeneradas: ${generated} | ya existían: ${skipped} | excluidas por marca de agua: ${excluded} | fallaron: ${failed.length}`)
-console.log(`books.json: ${linked} libros con portada, ${catalog.length - linked} con gradiente`)
+console.log(`\nGeneradas del PDF: ${generated} | ya existían: ${skipped} | PDF inservible por marca de agua: ${excluded} | fallaron: ${failed.length}`)
+console.log(`books.json: ${linked} libros con portada (incluye las de Open Library ya commiteadas), ${catalog.length - linked} con gradiente`)
 if (failed.length) {
   console.log('\nFallaron:')
   failed.forEach((f) => console.log(`  - ${f}`))

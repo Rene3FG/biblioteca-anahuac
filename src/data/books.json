@@ -10,7 +10,8 @@
     "desc": "Integra la anatomía descriptiva con correlaciones clínicas y de imagenología en cada región del cuerpo. Referencia clásica en la formación de médicos.",
     "pages": 2114,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/01-anatomia-con-orientacion-clinica.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/01-anatomia-con-orientacion-clinica.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/01-anatomia-con-orientacion-clinica.pdf",
+    "cover": "/covers/cover-1.jpg"
   },
   {
     "id": 2,
@@ -151,7 +152,8 @@
     "desc": "Cuaderno interactivo para colorear que refuerza el aprendizaje de la anatomía humana mediante la identificación visual de estructuras.",
     "pages": 393,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/12-netter-cuaderno-de-anatomia-para-colorear.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/12-netter-cuaderno-de-anatomia-para-colorear.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/12-netter-cuaderno-de-anatomia-para-colorear.pdf",
+    "cover": "/covers/cover-12.jpg"
   },
   {
     "id": 13,
@@ -164,7 +166,8 @@
     "desc": "Conecta los principios bioquímicos con la fisiología y la biología molecular de forma progresiva. Texto fundamental en la formación médica.",
     "pages": 1235,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/13-lehninger-principios-de-bioquimica.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/13-lehninger-principios-de-bioquimica.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/13-lehninger-principios-de-bioquimica.pdf",
+    "cover": "/covers/cover-13.jpg"
   },
   {
     "id": 14,
@@ -177,7 +180,8 @@
     "desc": "Integra la bioquímica con la práctica clínica mediante casos y correlaciones diagnósticas en cada capítulo.",
     "pages": 2531,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/14-bioquimica-medica.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/14-bioquimica-medica.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/14-bioquimica-medica.pdf",
+    "cover": "/covers/cover-14.jpg"
   },
   {
     "id": 15,
@@ -204,7 +208,8 @@
     "desc": "Versión en inglés del texto clásico de bioquímica ilustrada de Harper, con diagramas metabólicos y correlaciones clínicas.",
     "pages": 2023,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/16-harper-s-illustrated-biochemistry.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/16-harper-s-illustrated-biochemistry.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/16-harper-s-illustrated-biochemistry.pdf",
+    "cover": "/covers/cover-16.jpg"
   },
   {
     "id": 17,
@@ -217,7 +222,8 @@
     "desc": "Texto de referencia en embriología humana, desde la fecundación hasta el desarrollo fetal y las malformaciones congénitas más frecuentes.",
     "pages": 679,
     "viewLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/17-langman-embriologia-medica.pdf",
-    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/17-langman-embriologia-medica.pdf"
+    "downloadLink": "https://pub-bce2e9b29a004b1892a6da4b709d96d4.r2.dev/17-langman-embriologia-medica.pdf",
+    "cover": "/covers/cover-17.jpg"
   },
   {
     "id": 18,
