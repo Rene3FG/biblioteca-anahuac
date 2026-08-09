@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Search, Download, BookOpen, ChevronRight, ChevronDown, SlidersHorizontal, ArrowLeft, X, Star, LogOut } from 'lucide-react'
 import BOOKS from './data/books.json'
 import { O, B, Cover, Badge, STitle } from './ui'
@@ -8,6 +8,7 @@ import { useRecentlyRead } from './hooks/useRecentlyRead'
 import LoginModal from './components/LoginModal'
 import UpdatePasswordModal from './components/UpdatePasswordModal'
 import MiBibliotecaView from './views/MiBibliotecaView'
+import { routeFromLocation, pathForPage, pathForCatalogo } from './router'
 
 const SUBJECTS = [
   'Todos','Anatomía','Bioquímica','Embriología','Farmacología','Fisiología',
@@ -86,9 +87,12 @@ function HomeView({ go, pick, onLogin }) {
           <div style={{ fontSize:9, letterSpacing:'0.28em', color:O, textTransform:'uppercase', fontWeight:700, marginBottom:16 }}>
             Escuela de Medicina · Universidad Anáhuac Oaxaca
           </div>
-          <h1 style={{ color:'#fff', fontSize:'clamp(28px,5vw,46px)', fontWeight:800, letterSpacing:'-0.02em', lineHeight:1.08, margin:'0 0 32px', textTransform:'uppercase' }}>
+          <h1 className="serif-title" style={{ color:'#fff', fontSize:'clamp(30px,5vw,50px)', letterSpacing:'-0.01em', lineHeight:1.06, margin:'0 0 14px', textTransform:'uppercase' }}>
             Biblioteca Digital<br /><span style={{ color:O }}>Medicina</span>
           </h1>
+          <div className="serif-title" style={{ color:'rgba(255,255,255,0.5)', fontSize:'clamp(13px,1.6vw,16px)', margin:'0 0 30px' }}>
+            Líderes de Acción Positiva
+          </div>
           <div style={{ display:'flex', maxWidth:520, boxShadow:'0 8px 32px rgba(0,0,0,0.45)' }}>
             <input value={q} onChange={e => setQ(e.target.value)} onKeyDown={e => e.key === 'Enter' && go('catalogo', { q })}
               placeholder="Buscar libros, materias o autores..."
@@ -201,7 +205,10 @@ function HomeView({ go, pick, onLogin }) {
 }
 
 // ─── CATÁLOGO ─────────────────────────────────────────────────────────────────
-function CatalogoView({ params = {}, pick, onRequireLogin }) {
+// Nadie escribe acentos en un buscador: "anatomia" tiene que encontrar "Anatomía".
+const sinAcentos = (s) => (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+
+function CatalogoView({ params = {}, pick, go, onRequireLogin }) {
   const [filter, setFilter] = useState(params.filter || 'Todos')
   const [sort,   setSort]   = useState('recientes')
   const [search, setSearch] = useState(params.q || '')
@@ -211,9 +218,11 @@ function CatalogoView({ params = {}, pick, onRequireLogin }) {
   const { isFavorite, toggleFavorite } = useFavorites()
   const PER = 8
 
+  const q = sinAcentos(search)
   let list = BOOKS.filter(b => {
     if (filter !== 'Todos' && b.subject !== filter) return false
-    if (search && !b.title.toLowerCase().includes(search.toLowerCase()) && !(b.author || '').toLowerCase().includes(search.toLowerCase())) return false
+    // El campo dice "libros, materias o autores", así que la materia también cuenta.
+    if (q && ![b.title, b.author, b.subject].some(campo => sinAcentos(campo).includes(q))) return false
     return true
   })
   if (sort === 'recientes') list = [...list].sort((a, b) => (b.year || 0) - (a.year || 0))
@@ -221,6 +230,15 @@ function CatalogoView({ params = {}, pick, onRequireLogin }) {
 
   const total = Math.ceil(list.length / PER)
   const paged = list.slice((page - 1) * PER, page * PER)
+
+  // Se refleja el filtro en la URL para poder compartir una vista concreta, con
+  // replaceState para no llenar el historial mientras se teclea en el buscador.
+  useEffect(() => {
+    const destino = pathForCatalogo({ filter, q: search })
+    if (destino !== window.location.pathname + window.location.search) {
+      window.history.replaceState({}, '', destino)
+    }
+  }, [filter, search])
 
   return (
     <div className="sidebar-layout" style={{ maxWidth:1100, margin:'0 auto', padding:'32px 28px', display:'grid', gap:28 }}>
@@ -359,7 +377,7 @@ function DetalleView({ book, go, pick, onRequireLogin }) {
           <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:12 }}>
             <Badge subject={book.subject} />
           </div>
-          <h1 style={{ fontSize:'clamp(20px,3vw,28px)', fontWeight:800, color:B, lineHeight:1.15, margin:'0 0 8px', letterSpacing:'-0.01em' }}>{book.title}</h1>
+          <h1 className="serif-title" style={{ fontSize:'clamp(22px,3vw,30px)', color:B, lineHeight:1.2, margin:'0 0 8px' }}>{book.title}</h1>
           {book.author && <div style={{ fontSize:12, color:'#888', marginBottom:18 }}>Por {book.author}{book.year ? ` · ${book.year}` : ''}</div>}
           <div style={{ width:36, height:2, background:O, marginBottom:22 }} />
           <div style={{ fontSize:9, fontWeight:700, textTransform:'uppercase', letterSpacing:'0.14em', color:'#bbb', marginBottom:8 }}>Descripción general</div>
@@ -396,25 +414,45 @@ function DetalleView({ book, go, pick, onRequireLogin }) {
   )
 }
 
+// Se muestra cuando la URL apunta a algo que no existe (/libro/999) o a una
+// vista que pide sesión sin tenerla, en vez de dejar el `<main>` en blanco.
+const NoEncontrado = ({ go, mensaje }) => (
+  <div style={{ maxWidth:560, margin:'0 auto', padding:'88px 28px', textAlign:'center' }}>
+    <div style={{ fontSize:11, fontWeight:700, letterSpacing:'0.2em', textTransform:'uppercase', color:O, marginBottom:14 }}>
+      Página no disponible
+    </div>
+    <p style={{ fontSize:14, color:'#555', lineHeight:1.8, margin:'0 0 28px' }}>{mensaje}</p>
+    <div style={{ display:'flex', gap:10, justifyContent:'center', flexWrap:'wrap' }}>
+      <OBtn onClick={() => go('catalogo')}>Ver el catálogo</OBtn>
+      <OBtn outline onClick={() => go('home')}>Ir al inicio</OBtn>
+    </div>
+  </div>
+)
+
 // ─── APP SHELL ────────────────────────────────────────────────────────────────
 export default function App() {
-  const [page,   setPage]   = useState('home')
-  const [params, setParams] = useState({})
-  const [book,   setBook]   = useState(null)
+  const [route, setRoute] = useState(routeFromLocation)
   const [showLogin, setShowLogin] = useState(false)
   const { user, passwordRecovery, signOut } = useAuth()
+  const { page, params } = route
+
+  // El botón Atrás/Adelante del navegador tiene que mover la vista, no salir del sitio.
+  useEffect(() => {
+    const onPopState = () => setRoute(routeFromLocation())
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
+  }, [])
 
   const go = (p, ps = {}) => {
-    setPage(p)
-    setParams(ps)
+    window.history.pushState({}, '', pathForPage(p, ps))
+    setRoute(routeFromLocation())
     window.scrollTo(0, 0)
   }
 
-  const pick = (b) => {
-    setBook(b)
-    setPage('detalle')
-    window.scrollTo(0, 0)
-  }
+  const pick = (b) => go('detalle', { id: b.id })
+
+  // El libro sale de la URL, así que /libro/12 funciona al pegarlo o recargar.
+  const book = page === 'detalle' ? BOOKS.find(b => b.id === params.id) : null
 
   return (
     <div style={{ fontFamily:"system-ui,-apple-system,'Segoe UI',sans-serif", minHeight:'100vh', display:'flex', flexDirection:'column', background:'#fff' }}>
@@ -450,10 +488,16 @@ export default function App() {
       </nav>
 
       <main style={{ flex:1 }}>
-        {page === 'home'          && <HomeView go={go} pick={pick} onLogin={() => setShowLogin(true)} />}
-        {page === 'catalogo'      && <CatalogoView params={params} pick={pick} onRequireLogin={() => setShowLogin(true)} />}
-        {page === 'detalle'       && book && <DetalleView book={book} go={go} pick={pick} onRequireLogin={() => setShowLogin(true)} />}
-        {page === 'mi-biblioteca' && user && <MiBibliotecaView pick={pick} />}
+        {page === 'home'     && <HomeView go={go} pick={pick} onLogin={() => setShowLogin(true)} />}
+        {page === 'catalogo' && <CatalogoView params={params} pick={pick} go={go} onRequireLogin={() => setShowLogin(true)} />}
+        {page === 'detalle'  && (book
+          ? <DetalleView book={book} go={go} pick={pick} onRequireLogin={() => setShowLogin(true)} />
+          : <NoEncontrado go={go} mensaje="No encontramos ese libro. Puede que el enlace esté mal o que ya no esté en el catálogo." />
+        )}
+        {page === 'mi-biblioteca' && (user
+          ? <MiBibliotecaView pick={pick} />
+          : <NoEncontrado go={go} mensaje="Inicia sesión con tu correo @anahuac.mx para ver tus favoritos y tus lecturas recientes." />
+        )}
       </main>
 
       {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
